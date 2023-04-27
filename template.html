@@ -25,19 +25,19 @@ $endif$
     body {
       margin: 0 auto;
       max-width: 55em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
+      padding-left: 2em;
+      padding-right: 2em;
+      padding-top: 1em;
+      padding-bottom: 1em;
       hyphens: auto;
       overflow-wrap: break-word;
       text-rendering: optimizeLegibility;
       font-kerning: normal;
-      font: 14.4px/1.5 Helvetica, Arial, sans-serif; /* = semver.org */
+      font: 12pt/1.5 Helvetica, Arial, sans-serif;
     }
 div#navbar {
     position: fixed;
-    height: 60px;
+    height: 2em;
     top: 0;
     left: 0;
     right: 0;
@@ -49,7 +49,7 @@ div#navbar {
 
     color: antiquewhite;
     background-color: darkslategrey;
-    box-shadow: 0 0 50px 0 grey;
+    box-shadow: 0 0 1em 0 grey;
 }
 
 div#navbar > ul {
@@ -59,7 +59,7 @@ div#navbar > ul {
 
 div#navbar > ul > li {
     display: inline;
-    margin: 10px;
+    margin: 0.25em;
 }
 
 div#navbar input {
@@ -84,16 +84,16 @@ div#navbar input:checked ~ div.dropdown {
 div.dropdown ul {
   position: absolute;
   margin: 0;
-  top: 40px;
-  right: 10px;
-  padding-right: 10px;
+  top: 2.5em;
+  right: 0.5em;
+  padding-right: 0.5em;
   list-style: decimal;
   background-color: dimgrey;
-  border-radius: 10px;
+  border-radius: 0.5em;
 }
 
 div.dropdown li {
-  padding: 5px;
+  padding: 0.3em;
 }
     @media (max-width: 600px) {
       body {
@@ -122,7 +122,7 @@ div.dropdown li {
       }
     }
 div#content {
-  padding: 50px;
+  padding: 3em 2em 2em 2em;
   color: white;
 }
     p {
@@ -167,7 +167,7 @@ dd {
     blockquote {
       margin: 1em 0 1em 1.7em;
       padding-left: 1em;
-      border-left: 2px solid black;
+      border-left: 0.25em solid black;
       color: antiquewhite;
     }
     code {
@@ -268,7 +268,7 @@ dd {
       margin: 1em 0;
       padding: 1em;
       background-color: #1f1f1f;
-      border-radius: 1em;
+      border-radius: 0.5em;
     }
     pre.sourceCode {
       margin: 0;
@@ -362,9 +362,9 @@ span.PATCH {
 }
 span.ch {
   margin: 0;
-  padding: 2px;
+  padding: 0.5em;
   display: inline-block;
-  width: 2em;
+  width: 2.5em;
 }
 span.chAdd {
   color: white;
