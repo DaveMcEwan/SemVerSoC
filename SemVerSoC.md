@@ -480,7 +480,7 @@ However, that is not Semantic Versioning.
 Semantic Versioning is a scheme for communicating functional compatibility
 between releases, not about communicating project progress.
 Alternative schemes may appear cosmetically similar to SemVer (by using the
-format `MAJOR.MINOR.PATCH`) but not adhere to the same rules.
+format `X.Y.Z`) but not adhere to the same rules.
 By stating that your project uses SemVer, you're making a set of promises to
 your downstream users, most notably that they should be able to pull in MINOR
 and PATCH increments without *any* integration work.
