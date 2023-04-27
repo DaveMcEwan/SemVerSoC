@@ -1015,12 +1015,12 @@ considered part of the public API?
 </dl>
 <p>A common point of confusion is that SoC design is not the same as
 software. The SoC design process (at the <a
-href="https://en.wikipedia.org/wiki/Register_transfer_language">RTL</a>
+href="https://en.wikipedia.org/wiki/Register-transfer_level">RTL</a>
 level) sits somewhere between the design processes for software and
 high-volume hardware like injection moulds or <a
 href="https://en.wikipedia.org/wiki/Printed_circuit_board">PCB</a>s.
 High-volume manufacturing processes require extreme rigor in even the
-tiniest change because an subtle unnoticed mistake can quickly cost a
+tiniest change because a subtle unnoticed mistake can quickly cost a
 huge amount of wasted resources. In general, software development
 processes are considerably more relaxed because fixes can be deployed
 relatively easily to downstream users.</p>
@@ -1054,14 +1054,14 @@ clarifying:</p>
 <ol class="incremental" type="1">
 <li>SemVer <a href="https://semver.org/#spec-item-4">item 4</a> notes
 that <span class="MAJOR">MAJOR</span> version zero is for initial
-development, anything may change between <span
+development, so anything may change between <span
 class="MINOR">MINOR</span> and <span class="PATCH">PATCH</span>
 increments, and the public API <em>should not</em> be condsidered
 stable. If you’re still in the stage of development where refactoring
 and renaming changes are frequent, then the design isn’t yet stable so
 just keep the <span class="MAJOR">MAJOR</span> at zero until you’re
 satisfied that the design doesn’t need regular “tidying”.</li>
-<li>SemVer also has FAQ points (<a
+<li>SemVer has FAQ points (<a
 href="https://semver.org/#doesnt-this-discourage-rapid-development-and-fast-iteration">here</a>,
 <a
 href="https://semver.org/#if-even-the-tiniest-backwards-incompatible-changes-to-the-public-api-require-a-major-version-bump-wont-i-end-up-at-version-4200-very-rapidly">here</a>,
@@ -1072,7 +1072,7 @@ communicate effectively about changes which might cause them unexpected
 and unplanned work.</li>
 <li>If you’re adamant that signal names are not part of the public API,
 it is sufficient to simply state this in documentation and/or release
-notes. For example, “Synthesis scripts should not depend on an signal
+notes. For example, “Synthesis scripts should not depend on any signal
 matching the regular expression <code>.*_d</code>”.</li>
 </ol>
 <dl class="incremental">

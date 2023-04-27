@@ -391,11 +391,11 @@ are allowed within a PATCH increment version.
 Should internal signal names really be considered part of the public API?
 
 A common point of confusion is that SoC design is not the same as software.
-The SoC design process (at the [RTL](https://en.wikipedia.org/wiki/Register_transfer_language)
+The SoC design process (at the [RTL](https://en.wikipedia.org/wiki/Register-transfer_level)
 level) sits somewhere between the design processes for software and high-volume
 hardware like injection moulds or [PCB](https://en.wikipedia.org/wiki/Printed_circuit_board)s.
 High-volume manufacturing processes require extreme rigor in even the tiniest
-change because an subtle unnoticed mistake can quickly cost a huge amount of
+change because a subtle unnoticed mistake can quickly cost a huge amount of
 wasted resources.
 In general, software development processes are considerably more relaxed
 because fixes can be deployed relatively easily to downstream users.
@@ -431,13 +431,13 @@ the context of non-synthesizable code.
 If this all seems too restrictive, there are a few points worth clarifying:
 
 1. SemVer [item 4](https://semver.org/#spec-item-4) notes that MAJOR version
-   zero is for initial development, anything may change between MINOR and PATCH
-   increments, and the public API *should not* be condsidered stable.
+   zero is for initial development, so anything may change between MINOR and
+   PATCH increments, and the public API *should not* be condsidered stable.
    If you're still in the stage of development where refactoring and renaming
    changes are frequent, then the design isn't yet stable so just keep the
    MAJOR at zero until you're satisfied that the design doesn't need regular
    "tidying".
-2. SemVer also has FAQ points
+2. SemVer has FAQ points
    ([here](https://semver.org/#doesnt-this-discourage-rapid-development-and-fast-iteration),
    [here](https://semver.org/#if-even-the-tiniest-backwards-incompatible-changes-to-the-public-api-require-a-major-version-bump-wont-i-end-up-at-version-4200-very-rapidly),
    and [here](https://semver.org/#documenting-the-entire-public-api-is-too-much-work))
@@ -446,7 +446,7 @@ If this all seems too restrictive, there are a few points worth clarifying:
    work.
 3. If you're adamant that signal names are not part of the public API, it is
    sufficient to simply state this in documentation and/or release notes.
-   For example, "Synthesis scripts should not depend on an signal matching the
+   For example, "Synthesis scripts should not depend on any signal matching the
    regular expression `.*_d`".
 
 
