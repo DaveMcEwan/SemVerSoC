@@ -35,7 +35,7 @@ PANDOC_FLAGS += --variable=papersize:a4
 		-e 's/| any |/| \\colorbox{white}{\\makebox[3em][c]{\\rule[0pt]{0pt}{0.7em}\\textcolor{black}{any}}} |/' \
 		$*.md > $@
 
-%.pdf: %.intermediateTex.md
+%.pdf: %.intermediateTex.md template.latex
 	@pandoc --version
 	pandoc -i $*.intermediateTex.md \
 		--template template.latex \
@@ -54,7 +54,7 @@ PANDOC_FLAGS += --variable=papersize:a4
 		-e 's@| any |@| <span class="ch chAny">any</span> |@' \
 		$*.md > $@
 
-%.html: %.intermediateHtml.md
+%.html: %.intermediateHtml.md template.html
 	@pandoc --version
 	pandoc -i $*.intermediateHtml.md \
 		--template template.html \
