@@ -365,24 +365,24 @@ are allowed within a PATCH increment version.
 | any | Combinatorial signal            | PATCH                |
 | add | Sequential signal               | PATCH                |
 | rem | Sequential signal               | MAJOR                |
-| mod | Sequential signal name          | MAJOR                |
+| mod | Sequential signal name          | MAJOR`*`             |
 | mod | Sequential signal datatype      | MINOR                |
 | mod | Sequential signal expression    | MINOR                |
-| any | Hierarchy middle layer          | MAJOR                |
+| any | Hierarchy middle layer          | MAJOR`*`             |
 | add | Hierarchy bottom layer          | MINOR                |
-| mod | Hierarchy bottom layer          | MAJOR                |
-| rem | Hierarchy bottom layer          | MAJOR                |
+| mod | Hierarchy bottom layer          | MAJOR`*`             |
 | add | Package function                | MINOR                |
-| rem | Package function                | MAJOR                |
+| rem | Package function                | MAJOR`*`             |
 | mod | Package function behavior       | PATCH                |
 | any | Tool directive comment          | MAJOR                |
-| any | Tag comment                     | PATCH                |
-| any | Human-only comment              | PATCH                |
+| any | Human-only or tag comment       | PATCH                |
 | add | Software register               | MINOR                |
-| rem | Software register               | MAJOR                |
-| mod | Software register address       | MAJOR                |
-| mod | Software register field layout  | MAJOR                |
-| mod | Software register reset value   | MAJOR                |
+| rem | Software register               | MAJOR`*`             |
+| mod | Software register address       | MAJOR`*`             |
+| mod | Software register field layout  | MAJOR`*`             |
+| mod | Software register reset value   | MAJOR`*`             |
+
+`*` Increment MAJOR, unless changes are *explicitly* exempt (then MINOR).
 
 
 ## FAQ

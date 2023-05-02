@@ -26,6 +26,8 @@ PANDOC_FLAGS += --variable=papersize:a4
 		-e 's/^## \(Downstream Users and Auxiliary Components\)$$/\\clearpage\n## \1/' \
 		-e 's/^## \(Changes in .*\)$$/\\clearpage\n## \1/' \
 		-e 's/^### \(.* Cheatsheet\)$$/\\clearpage\n### \1/' \
+		-e 's/`\*` /\\footnotemark[1]/' \
+		-e 's/^`\*` \(.*\)$$/\\footnotetext[1]{\1}/' \
 		-e 's/MAJOR/\\textcolor{red}{MAJOR}/' \
 		-e 's/MINOR/\\textcolor{orange}{MINOR}/' \
 		-e 's/PATCH/\\textcolor{Purple}{PATCH}/' \
