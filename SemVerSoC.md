@@ -97,7 +97,8 @@ which may (or may not) correspond to additional files.
   SystemVerilog) and naming conventions.
   Other users may have flows which extract information which depend on these
   seemingly minor details.
-- Hierarchical paths and specific identifiers (names).
+- Hierarchical paths and specific identifiers (names) which are not explicitly
+  exempt.
   In verification, specific FFs may be forced to obtain coverage on a
   difficult-to-reach state.
   In physical implementation, specific FFs may be selected as requiring special
