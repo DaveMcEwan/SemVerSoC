@@ -10,6 +10,7 @@ DATETIME_ISO8601 := ${DATE_ISO8601}T${TIME_ISO8601}
 PANDOC_FLAGS := -f markdown
 PANDOC_FLAGS += --metadata "title=Addendum to SemVer: System-on-Chip Designs"
 PANDOC_FLAGS += --metadata "author=Dave McEwan"
+PANDOC_FLAGS += --metadata "author=Anja Dekens"
 PANDOC_FLAGS += --metadata "date=${DATETIME_ISO8601}"
 PANDOC_FLAGS += --metadata "keywords=SemVer"
 PANDOC_FLAGS += --metadata "keywords=SoC"
