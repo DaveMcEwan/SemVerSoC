@@ -184,42 +184,42 @@ Referencing the example, the MAJOR version must be incremented with any of the
 following changes:
 
 1. Modified module name which integrators use to declare an instance of the
-  peripheral, e.g. `Alu` $\to$ `MyArithmetic`.
+  peripheral, e.g. `Alu` → `MyArithmetic`.
   Existing code using the name `Alu` will not elaborate unchanged.
 2. Removed parameter port, e.g. ~~`RESULT_W`~~.
   Existing code overriding the parameter value will not elaborate unchanged.
-3. Modified parameter port kind, e.g. `parameter` $\to$ `localparam`, i.e.
+3. Modified parameter port kind, e.g. `parameter` → `localparam`, i.e.
   overridable to non-overridable.
   Existing code overriding the parameter value will not elaborate unchanged.
-4. Modified parameter port name, e.g. `RESULT_W` $\to$ `OUT_WIDTH`.
+4. Modified parameter port name, e.g. `RESULT_W` → `OUT_WIDTH`.
   Existing code using the name `RESULT_W` will not elaborate unchanged.
-5. Modified parameter port default value, e.g. `16` $\to$ `5`, including
+5. Modified parameter port default value, e.g. `16` → `5`, including
   addition or removal of the explicit default value.
   Existing code may depend on the default value for critical functionality.
 6. Removed signal port, e.g. ~~`o_resultant`~~.
   Existing code using that port will not elaborate unchanged.
-7. Modified signal port datatype, e.g. `logic [1:0][7:0]` $\to$ `logic [15:0]`.
+7. Modified signal port datatype, e.g. `logic [1:0][7:0]` → `logic [15:0]`.
   Existing code may depend on the size and structure of the port datatype, and
   input expressions may be cast to an unexpected width or datatype.
-8. Modified signal port name, e.g. `i_operands` $\to$ `i_numbers`.
+8. Modified signal port name, e.g. `i_operands` → `i_numbers`.
   Existing code using the name `i_operands` will not elaborate unchanged.
 9. Removed interface port, e.g. ~~`ifc_APB`~~.
   Existing code using the APB interface will not elaborate unchanged.
-10. Modified interface port type, e.g. `APB.slave` $\to$ `AXI.slave`.
+10. Modified interface port type, e.g. `APB.slave` → `AXI.slave`.
   Existing code using the APB interface will not elaborate unchanged.
-11. Modified interface port name, e.g. `ifc_APB` $\to$ `myApb`.
+11. Modified interface port name, e.g. `ifc_APB` → `myApb`.
   Existing code using the name `ifc_APB` will not elaborate unchanged.
-12. Removed or modified sequential signal name, e.g. `foo_q` $\to$ `bar_q`.
+12. Removed or modified sequential signal name, e.g. `foo_q` → `bar_q`.
   Existing code referencing `foo_q` will not find the inferred FF(s).
   You may not notice the breakage until your colleagues in physical
   implementation notify you that their scripts don't work.
   In the worst cases, FFs requiring special treatment can be silently missed.
 13. Any added, removed, or renamed hierarchical middle layer, e.g.
-  `Alu.u_pipe` $\to$ `Alu.u_wrapperA.u_pipe`.
+  `Alu.u_pipe` → `Alu.u_wrapperA.u_pipe`.
   Existing code, particularly for physical implementation, may depend on the
   hierarchical names including generate blocks.
 14. Removed, or renamed hierarchical bottom layer, e.g.
-  `Alu.u_pipe1` $\to$ `Alu.u_pipe[1]`.
+  `Alu.u_pipe1` → `Alu.u_pipe[1]`.
   Existing code, particularly for physical implementation, may depend on the
   hierarchical names including generate loops.
 15. Removed or functionally modified package function.
@@ -231,15 +231,15 @@ following changes:
 17. Removed software-accessible register, e.g. ~~`CFG`~~.
   Existing system software accessing the `CFG` address will not operate
   equivalently.
-18. Modified software-accessible register address, e.g. `12'h444` $\to$
+18. Modified software-accessible register address, e.g. `12'h444` →
   `12'h888`.
   Existing system software accessing the address `0x444` will not operate
   equivalently.
 19. Modified software-accessible register field layout, e.g. `CFG[0]=ENABLE`
-  $\to$ `CFG[31]=ENABLE`.
+  → `CFG[31]=ENABLE`.
   Existing system software accessing the register will not operate
   equivalently.
-20. Modified software-accessible register reset value, e.g. `32'd5` $\to$
+20. Modified software-accessible register reset value, e.g. `32'd5` →
   `32'd0`.
   Existing system software accessing the register will not operate
   equivalently, particularly software performing non-atomic read-modify-write
@@ -271,12 +271,12 @@ Where SemVer specifies adding functionality, SoC designs must update
 3. Added signal port, e.g. `output o_another`.
   Existing code may elaborate unchanged and a new signal port implies new
   functionality.
-4. Modified signal port direction, e.g. `inout myport` $\to$ `output myport`.
+4. Modified signal port direction, e.g. `inout myport` → `output myport`.
   Existing code may elaborate unchanged, but simulation semantics may be
   different.
   If existing code needs changes to elaborate with the updated version, then
   increment MAJOR instead.
-5. Modified signal port nettype, e.g. `input logic` $\to$ `input var logic`.
+5. Modified signal port nettype, e.g. `input logic` → `input var logic`.
   Default nettype of `input` and `inout` signal ports with datatype `logic` is
   `tri`, but for `output` ports it's `var`.
   Existing code may elaborate unchanged, but simulation semantics may be
@@ -287,7 +287,7 @@ Where SemVer specifies adding functionality, SoC designs must update
   Existing code may elaborate unchanged and a new interface port implies new
   functionality.
 7. Modified sequential signal datatype or expression, e.g. `logic [1:0] foo_q`
-  $\to$ `FooEnum_t foo_q`.
+  → `FooEnum_t foo_q`.
   Backwards-compatible changes only require a MINOR increment, but incompatible
   changes like reducing the *intended* width of a FF vector require a MAJOR
   increment.
@@ -315,15 +315,15 @@ accept the new version, increment MAJOR instead.
 As with SemVer, only backwards-compatible changes (for all downstream users)
 are allowed within a PATCH increment version.
 
-1. Added, removed, or modified internal constant, e.g. `MYCONSTANT` $\to$
+1. Added, removed, or modified internal constant, e.g. `MYCONSTANT` →
   `BETTERNAME`.
   Internal constants should not be relied upon downstream.
-2. Added, removed, or modified internal combinational signal, e.g. `foo_d` $\to$
+2. Added, removed, or modified internal combinational signal, e.g. `foo_d` →
   `bar_d`.
   Internal combinational signals should not be relied upon downstream.
   Exemption: If you change signals which are *intended* to be probed or
   forced by downstream users, increment MAJOR instead, e.g. `disableChecks`
-  $\to$ `turnOffChecks`.
+  → `turnOffChecks`.
 3. Added internal sequential signal, e.g. `new_q`.
   Additional FFs will affect area, power, achievable fmax and cost, but are
   unlikely to break physical implementation flows outright.
