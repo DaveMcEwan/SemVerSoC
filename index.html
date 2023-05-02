@@ -5,6 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Dave McEwan" />
+  <meta name="author" content="Anja Dekens" />
   <meta name="keywords" content="SemVer, SoC, SystemVerilog, Verilog, VHDL" />
   <title>Addendum to SemVer: System-on-Chip Designs</title>
   <style>
@@ -397,13 +398,14 @@ tr:nth-child(odd) {
         <div class="dropdown">
           <ul>
             <li><a href="https://semver.org/">SemVer</a></li>
-            <li><a href="http://sentimentalversioning.org/">Sentimental Versioning</a></li>
             <li><a href="https://www.ietf.org/rfc/inline-errata/rfc2119.html">RFC 2119 Errata</a></li>
             <li><a href="https://keepachangelog.com/">Keep A Changelog</a></li>
             <li><a href="https://doc.rust-lang.org/cargo/reference/semver.html">Rust/Cargo</a></li>
             <li><a href="https://github.com/npm/node-semver">Node.js/npm</a></li>
             <li><a href="https://semverdoc.org/">SemVerDoc</a></li>
+            <li><a href="http://sentimentalversioning.org/">Sentimental Versioning</a></li>
             <li><a href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">Major Version Numbers are Not Sacred</a></li>
+            <li><a href="https://calver.org/">CalVer</a></li>
           </ul>
         </div>
       </li>
@@ -460,8 +462,8 @@ because that does not affect their software. In contrast, a user working
 on physical implementation might see the register address and reset
 value as trivial details, but depend on the hierarchical path of the FF
 to ensure that it is implemented with the correct type of cell.</p>
-<p>The public API is restricted to the reasonable ways that users are
-expected to use a release. <a
+<p><strong>The public API is restricted to the reasonable ways that
+users are expected to use a release.</strong> <a
 href="https://en.wikipedia.org/wiki/In-house_software">In-house</a>
 projects may use this restriction to avoid incrementing <span
 class="MAJOR">MAJOR</span> too often, i.e. the distinction between a
@@ -516,10 +518,11 @@ whitespace/formatting rules to the specification language (e.g. Verilog
 vs SystemVerilog) and naming conventions. Other users may have flows
 which extract information which depend on these seemingly minor
 details.</li>
-<li>Hierarchical paths and specific identifiers (names). In
-verification, specific FFs may be forced to obtain coverage on a
-difficult-to-reach state. In physical implementation, specific FFs may
-be selected as requiring special treatment to meet timing.</li>
+<li>Hierarchical paths and specific identifiers (names) which are not
+explicitly exempt. In verification, specific FFs may be forced to obtain
+coverage on a difficult-to-reach state. In physical implementation,
+specific FFs may be selected as requiring special treatment to meet
+timing.</li>
 <li>Constraints on clocks, timing, pin-mapping, cell placement, routing,
 etc.</li>
 <li>Scripts for design modification flows such as <a
@@ -603,56 +606,53 @@ API changes</li>
 must be incremented with any of the following changes:</p>
 <ol class="incremental" type="1">
 <li>Modified module name which integrators use to declare an instance of
-the peripheral, e.g. <code>Alu</code> <span class="math inline">→</span>
-<code>MyArithmetic</code>. Existing code using the name <code>Alu</code>
-will not elaborate unchanged.</li>
+the peripheral, e.g. <code>Alu</code> → <code>MyArithmetic</code>.
+Existing code using the name <code>Alu</code> will not elaborate
+unchanged.</li>
 <li>Removed parameter port, e.g. <del><code>RESULT_W</code></del>.
 Existing code overriding the parameter value will not elaborate
 unchanged.</li>
-<li>Modified parameter port kind, e.g. <code>parameter</code> <span
-class="math inline">→</span> <code>localparam</code>, i.e. overridable
-to non-overridable. Existing code overriding the parameter value will
-not elaborate unchanged.</li>
-<li>Modified parameter port name, e.g. <code>RESULT_W</code> <span
-class="math inline">→</span> <code>OUT_WIDTH</code>. Existing code using
-the name <code>RESULT_W</code> will not elaborate unchanged.</li>
-<li>Modified parameter port default value, e.g. <code>16</code> <span
-class="math inline">→</span> <code>5</code>, including addition or
-removal of the explicit default value. Existing code may depend on the
-default value for critical functionality.</li>
+<li>Modified parameter port kind, e.g. <code>parameter</code> →
+<code>localparam</code>, i.e. overridable to non-overridable. Existing
+code overriding the parameter value will not elaborate unchanged.</li>
+<li>Modified parameter port name, e.g. <code>RESULT_W</code> →
+<code>OUT_WIDTH</code>. Existing code using the name
+<code>RESULT_W</code> will not elaborate unchanged.</li>
+<li>Modified parameter port default value, e.g. <code>16</code> →
+<code>5</code>, including addition or removal of the explicit default
+value. Existing code may depend on the default value for critical
+functionality.</li>
 <li>Removed signal port, e.g. <del><code>o_resultant</code></del>.
 Existing code using that port will not elaborate unchanged.</li>
-<li>Modified signal port datatype, e.g. <code>logic [1:0][7:0]</code>
-<span class="math inline">→</span> <code>logic [15:0]</code>. Existing
-code may depend on the size and structure of the port datatype, and
-input expressions may be cast to an unexpected width or datatype.</li>
-<li>Modified signal port name, e.g. <code>i_operands</code> <span
-class="math inline">→</span> <code>i_numbers</code>. Existing code using
-the name <code>i_operands</code> will not elaborate unchanged.</li>
+<li>Modified signal port datatype, e.g. <code>logic [1:0][7:0]</code> →
+<code>logic [15:0]</code>. Existing code may depend on the size and
+structure of the port datatype, and input expressions may be cast to an
+unexpected width or datatype.</li>
+<li>Modified signal port name, e.g. <code>i_operands</code> →
+<code>i_numbers</code>. Existing code using the name
+<code>i_operands</code> will not elaborate unchanged.</li>
 <li>Removed interface port, e.g. <del><code>ifc_APB</code></del>.
 Existing code using the APB interface will not elaborate unchanged.</li>
-<li>Modified interface port type, e.g. <code>APB.slave</code> <span
-class="math inline">→</span> <code>AXI.slave</code>. Existing code using
-the APB interface will not elaborate unchanged.</li>
-<li>Modified interface port name, e.g. <code>ifc_APB</code> <span
-class="math inline">→</span> <code>myApb</code>. Existing code using the
-name <code>ifc_APB</code> will not elaborate unchanged.</li>
+<li>Modified interface port type, e.g. <code>APB.slave</code> →
+<code>AXI.slave</code>. Existing code using the APB interface will not
+elaborate unchanged.</li>
+<li>Modified interface port name, e.g. <code>ifc_APB</code> →
+<code>myApb</code>. Existing code using the name <code>ifc_APB</code>
+will not elaborate unchanged.</li>
 <li>Removed or modified sequential signal name, e.g. <code>foo_q</code>
-<span class="math inline">→</span> <code>bar_q</code>. Existing code
-referencing <code>foo_q</code> will not find the inferred FF(s). You may
-not notice the breakage until your colleagues in physical implementation
-notify you that their scripts don’t work. In the worst cases, FFs
-requiring special treatment can be silently missed.</li>
+→ <code>bar_q</code>. Existing code referencing <code>foo_q</code> will
+not find the inferred FF(s). You may not notice the breakage until your
+colleagues in physical implementation notify you that their scripts
+don’t work. In the worst cases, FFs requiring special treatment can be
+silently missed.</li>
 <li>Any added, removed, or renamed hierarchical middle layer, e.g.
-<code>Alu.u_pipe</code> <span class="math inline">→</span>
-<code>Alu.u_wrapperA.u_pipe</code>. Existing code, particularly for
-physical implementation, may depend on the hierarchical names including
-generate blocks.</li>
+<code>Alu.u_pipe</code> → <code>Alu.u_wrapperA.u_pipe</code>. Existing
+code, particularly for physical implementation, may depend on the
+hierarchical names including generate blocks.</li>
 <li>Removed, or renamed hierarchical bottom layer, e.g.
-<code>Alu.u_pipe1</code> <span class="math inline">→</span>
-<code>Alu.u_pipe[1]</code>. Existing code, particularly for physical
-implementation, may depend on the hierarchical names including generate
-loops.</li>
+<code>Alu.u_pipe1</code> → <code>Alu.u_pipe[1]</code>. Existing code,
+particularly for physical implementation, may depend on the hierarchical
+names including generate loops.</li>
 <li>Removed or functionally modified package function. Higher-level
 designs may depend on any aspect of a function in a supplied package at
 elaboration time, simulation time, and in synthesis.</li>
@@ -664,19 +664,18 @@ functionality.</li>
 e.g. <del><code>CFG</code></del>. Existing system software accessing the
 <code>CFG</code> address will not operate equivalently.</li>
 <li>Modified software-accessible register address,
-e.g. <code>12'h444</code> <span class="math inline">→</span>
-<code>12'h888</code>. Existing system software accessing the address
-<code>0x444</code> will not operate equivalently.</li>
+e.g. <code>12'h444</code> → <code>12'h888</code>. Existing system
+software accessing the address <code>0x444</code> will not operate
+equivalently.</li>
 <li>Modified software-accessible register field layout,
-e.g. <code>CFG[0]=ENABLE</code> <span class="math inline">→</span>
-<code>CFG[31]=ENABLE</code>. Existing system software accessing the
-register will not operate equivalently.</li>
+e.g. <code>CFG[0]=ENABLE</code> → <code>CFG[31]=ENABLE</code>. Existing
+system software accessing the register will not operate
+equivalently.</li>
 <li>Modified software-accessible register reset value,
-e.g. <code>32'd5</code> <span class="math inline">→</span>
-<code>32'd0</code>. Existing system software accessing the register will
-not operate equivalently, particularly software performing non-atomic
-read-modify-write operations on startup like
-<code>cfg-&gt;operation++</code>.</li>
+e.g. <code>32'd5</code> → <code>32'd0</code>. Existing system software
+accessing the register will not operate equivalently, particularly
+software performing non-atomic read-modify-write operations on startup
+like <code>cfg-&gt;operation++</code>.</li>
 </ol>
 <p>To summarize, the <span class="MAJOR">MAJOR</span> version must be
 incremented with any changes which <em>require</em> updates to any
@@ -708,27 +707,27 @@ class="MAJOR">MAJOR</span> instead.</li>
 <li>Added signal port, e.g. <code>output o_another</code>. Existing code
 may elaborate unchanged and a new signal port implies new
 functionality.</li>
-<li>Modified signal port direction, e.g. <code>inout myport</code> <span
-class="math inline">→</span> <code>output myport</code>. Existing code
-may elaborate unchanged, but simulation semantics may be different. If
-existing code needs changes to elaborate with the updated version, then
-increment <span class="MAJOR">MAJOR</span> instead.</li>
-<li>Modified signal port nettype, e.g. <code>input logic</code> <span
-class="math inline">→</span> <code>input var logic</code>. Default
-nettype of <code>input</code> and <code>inout</code> signal ports with
-datatype <code>logic</code> is <code>tri</code>, but for
-<code>output</code> ports it’s <code>var</code>. Existing code may
-elaborate unchanged, but simulation semantics may be different. If
-existing code needs changes to elaborate with the updated version, then
-increment <span class="MAJOR">MAJOR</span> instead.</li>
+<li>Modified signal port direction, e.g. <code>inout myport</code> →
+<code>output myport</code>. Existing code may elaborate unchanged, but
+simulation semantics may be different. If existing code needs changes to
+elaborate with the updated version, then increment <span
+class="MAJOR">MAJOR</span> instead.</li>
+<li>Modified signal port nettype, e.g. <code>input logic</code> →
+<code>input var logic</code>. Default nettype of <code>input</code> and
+<code>inout</code> signal ports with datatype <code>logic</code> is
+<code>tri</code>, but for <code>output</code> ports it’s
+<code>var</code>. Existing code may elaborate unchanged, but simulation
+semantics may be different. If existing code needs changes to elaborate
+with the updated version, then increment <span
+class="MAJOR">MAJOR</span> instead.</li>
 <li>Added interface port, e.g. <code>OCP.slave</code>. Existing code may
 elaborate unchanged and a new interface port implies new
 functionality.</li>
 <li>Modified sequential signal datatype or expression,
-e.g. <code>logic [1:0] foo_q</code> <span class="math inline">→</span>
-<code>FooEnum_t foo_q</code>. Backwards-compatible changes only require
-a <span class="MINOR">MINOR</span> increment, but incompatible changes
-like reducing the <em>intended</em> width of a FF vector require a <span
+e.g. <code>logic [1:0] foo_q</code> → <code>FooEnum_t foo_q</code>.
+Backwards-compatible changes only require a <span
+class="MINOR">MINOR</span> increment, but incompatible changes like
+reducing the <em>intended</em> width of a FF vector require a <span
 class="MAJOR">MAJOR</span> increment.</li>
 <li>Added hierarchical bottom layer, e.g. <code>Alu.u_pipeA2</code>. New
 hierarchy implies new functionality, not just a bug fix.</li>
@@ -760,17 +759,14 @@ users) are allowed within a <span class="PATCH">PATCH</span> increment
 version.</p>
 <ol class="incremental" type="1">
 <li>Added, removed, or modified internal constant,
-e.g. <code>MYCONSTANT</code> <span class="math inline">→</span>
-<code>BETTERNAME</code>. Internal constants should not be relied upon
-downstream.</li>
+e.g. <code>MYCONSTANT</code> → <code>BETTERNAME</code>. Internal
+constants should not be relied upon downstream.</li>
 <li>Added, removed, or modified internal combinational signal,
-e.g. <code>foo_d</code> <span class="math inline">→</span>
-<code>bar_d</code>. Internal combinational signals should not be relied
-upon downstream. Exemption: If you change signals which are
-<em>intended</em> to be probed or forced by downstream users, increment
-<span class="MAJOR">MAJOR</span> instead,
-e.g. <code>disableChecks</code> <span class="math inline">→</span>
-<code>turnOffChecks</code>.</li>
+e.g. <code>foo_d</code> → <code>bar_d</code>. Internal combinational
+signals should not be relied upon downstream. Exemption: If you change
+signals which are <em>intended</em> to be probed or forced by downstream
+users, increment <span class="MAJOR">MAJOR</span> instead,
+e.g. <code>disableChecks</code> → <code>turnOffChecks</code>.</li>
 <li>Added internal sequential signal, e.g. <code>new_q</code>.
 Additional FFs will affect area, power, achievable fmax and cost, but
 are unlikely to break physical implementation flows outright. Note,
@@ -915,7 +911,8 @@ Cheatsheet</h3>
 <tr class="even">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
 <td style="text-align: left;">Sequential signal name</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
@@ -930,7 +927,8 @@ Cheatsheet</h3>
 <tr class="odd">
 <td style="text-align: center;"><span class="ch chAny">any</span></td>
 <td style="text-align: left;">Hierarchy middle layer</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="ch chAdd">add</span></td>
@@ -940,41 +938,33 @@ Cheatsheet</h3>
 <tr class="odd">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
 <td style="text-align: left;">Hierarchy bottom layer</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="ch chRem">rem</span></td>
-<td style="text-align: left;">Hierarchy bottom layer</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;"><span class="ch chAdd">add</span></td>
 <td style="text-align: left;">Package function</td>
 <td style="text-align: left;"><span class="MINOR">MINOR</span></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;"><span class="ch chRem">rem</span></td>
 <td style="text-align: left;">Package function</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
 <td style="text-align: left;">Package function behavior</td>
 <td style="text-align: left;"><span class="PATCH">PATCH</span></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;"><span class="ch chAny">any</span></td>
 <td style="text-align: left;">Tool directive comment</td>
 <td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
 </tr>
-<tr class="odd">
-<td style="text-align: center;"><span class="ch chAny">any</span></td>
-<td style="text-align: left;">Tag comment</td>
-<td style="text-align: left;"><span class="PATCH">PATCH</span></td>
-</tr>
 <tr class="even">
 <td style="text-align: center;"><span class="ch chAny">any</span></td>
-<td style="text-align: left;">Human-only comment</td>
+<td style="text-align: left;">Human-only or tag comment</td>
 <td style="text-align: left;"><span class="PATCH">PATCH</span></td>
 </tr>
 <tr class="odd">
@@ -985,25 +975,32 @@ Cheatsheet</h3>
 <tr class="even">
 <td style="text-align: center;"><span class="ch chRem">rem</span></td>
 <td style="text-align: left;">Software register</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
 <td style="text-align: left;">Software register address</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
 <td style="text-align: left;">Software register field layout</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="ch chMod">mod</span></td>
 <td style="text-align: left;">Software register reset value</td>
-<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
 </tr>
 </tbody>
 </table>
+<p><code>*</code> Increment <span class="MAJOR">MAJOR</span>, unless
+changes are <em>explicitly</em> exempt (then <span
+class="MINOR">MINOR</span>).</p>
 <h2 id="faq">FAQ</h2>
 <dl class="incremental">
 <dt>1 -</dt>
