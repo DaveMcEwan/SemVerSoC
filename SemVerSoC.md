@@ -44,8 +44,8 @@ In contrast, a user working on physical implementation might see the register
 address and reset value as trivial details, but depend on the hierarchical path
 of the FF to ensure that it is implemented with the correct type of cell.
 
-The public API is restricted to the reasonable ways that users are expected to
-use a release.
+**The public API is restricted to the reasonable ways that users are expected
+to use a release.**
 [In-house](https://en.wikipedia.org/wiki/In-house_software) projects may use
 this restriction to avoid incrementing MAJOR too often, i.e. the distinction
 between a breaking change and a bugfix can be redefined if you
