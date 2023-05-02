@@ -645,11 +645,11 @@ not find the inferred FF(s). You may not notice the breakage until your
 colleagues in physical implementation notify you that their scripts
 don’t work. In the worst cases, FFs requiring special treatment can be
 silently missed.</li>
-<li>Any added, removed, or renamed hierarchical middle layer, e.g.
+<li>Added, removed, or renamed hierarchical middle layer, e.g.
 <code>Alu.u_pipe</code> → <code>Alu.u_wrapperA.u_pipe</code>. Existing
 code, particularly for physical implementation, may depend on the
 hierarchical names including generate blocks.</li>
-<li>Removed, or renamed hierarchical bottom layer, e.g.
+<li>Removed, modified, or renamed hierarchical bottom layer, e.g.
 <code>Alu.u_pipe1</code> → <code>Alu.u_pipe[1]</code>. Existing code,
 particularly for physical implementation, may depend on the hierarchical
 names including generate loops.</li>

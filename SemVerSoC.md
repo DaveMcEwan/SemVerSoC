@@ -215,11 +215,11 @@ following changes:
   You may not notice the breakage until your colleagues in physical
   implementation notify you that their scripts don't work.
   In the worst cases, FFs requiring special treatment can be silently missed.
-13. Any added, removed, or renamed hierarchical middle layer, e.g.
+13. Added, removed, or renamed hierarchical middle layer, e.g.
   `Alu.u_pipe` → `Alu.u_wrapperA.u_pipe`.
   Existing code, particularly for physical implementation, may depend on the
   hierarchical names including generate blocks.
-14. Removed, or renamed hierarchical bottom layer, e.g.
+14. Removed, modified, or renamed hierarchical bottom layer, e.g.
   `Alu.u_pipe1` → `Alu.u_pipe[1]`.
   Existing code, particularly for physical implementation, may depend on the
   hierarchical names including generate loops.
