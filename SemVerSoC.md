@@ -459,7 +459,7 @@ Do I need to increment MAJOR for every dependency update?
   increased, then yes because that incompatibility can break things for your
   users.
 - If you're using a version control like git, you don't need to make a release
-  for each depedency individually, just like you wouldn't make a release from
+  for each dependency individually, just like you wouldn't make a release from
   every commit.
   As a responsible developer, your releases should be planned and the effects
   of any changes should be understood.
