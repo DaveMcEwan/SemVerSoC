@@ -155,8 +155,8 @@ module Alu
   // ... snip ...
 
   ArithmeticPipe u_pipeA1
-    ( .i_opA  (i_operands[3:0])
-    , .i_opB  (i_operands[7:4])
+    ( .i_opA  (i_operands[1][3:0])
+    , .i_opB  (i_operands[0][7:4])
     , .o_taps (foo_d)
     );
 
