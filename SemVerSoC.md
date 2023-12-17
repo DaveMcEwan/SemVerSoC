@@ -477,6 +477,11 @@ It's great to have a well-written plan so that users know what key features
 to expect as your project progresses, and it's nice that you provide a
 consistent way of communicating project progress.
 However, that is not Semantic Versioning.
+Where users of your project assume it uses Semantic Versioning and have
+automated tools like
+[Dependabot](https://docs.github.com/en/code-security/dependabot) to detect
+compatabilities between component releases, they're likely to experience
+unexpected breakages.
 
 Semantic Versioning is a scheme for communicating functional compatibility
 between releases, not about communicating project progress.

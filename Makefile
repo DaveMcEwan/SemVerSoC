@@ -25,6 +25,7 @@ PANDOC_FLAGS += --variable=papersize:a4
 	sed \
 		-e 's/^## \(Downstream Users and Auxiliary Components\)$$/\\clearpage\n## \1/' \
 		-e 's/^## \(Changes in .*\)$$/\\clearpage\n## \1/' \
+		-e 's/^## FAQ$$/\\clearpage\n## FAQ/' \
 		-e 's/^### \(.* Cheatsheet\)$$/\\clearpage\n### \1/' \
 		-e 's/`\*` /\\footnotemark[1]/' \
 		-e 's/^`\*` \(.*\)$$/\\footnotetext[1]{\1}/' \
