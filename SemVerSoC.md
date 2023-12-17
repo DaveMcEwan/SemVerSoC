@@ -385,6 +385,257 @@ are allowed within a PATCH increment version.
 `*` Increment MAJOR, unless changes are *explicitly* exempt (then MINOR).
 
 
+## Changes in Verilog
+
+Verilog, IEEE Std. 1364, has been formally superseded by SystemVerilog, but is
+still used to support compatability with older tools.
+The SystemVerilog example (above) is adapted to demonstrate API components of a
+design distributed as Verilog.
+
+```verilog
+module Alu
+  ( i_clk
+  , i_arst
+  , i_operands
+  , o_result
+  );
+
+  input  wire                   i_clk;
+  input  wire                   i_arst;
+  input  wire [(8 * 2) - 1:0]   i_operands;
+  output wire [RESULT_W - 1:0]  o_result;
+
+  parameter integer RESULT_W = 16;
+
+  localparam [0:0] MYCONSTANT = 1'b1;
+
+  // To be combinatorially driven via `assign` or connection to sub-module.
+  wire fooA_d;
+
+  // To be combinatorially driven via `always @*`.
+  reg fooB_d;
+
+  // To be sequentially driven via `always @(posedge i_clk)`.
+  reg foo_q;
+
+  // ... snip ...
+
+  ArithmeticPipe u_pipeA1
+    ( .i_opA  (i_operands[(8 * 1) + 3:(8 * 1) + 0])
+    , .i_opB  (i_operands[(8 * 0) + 7:(8 * 0) + 4])
+    , .o_taps (fooA_d)
+    );
+
+  always @(posedge i_clk or posedge i_arst)
+    if (i_arst)
+      foo_q <= '0;
+    else if (updateFoo)
+      foo_q <= fooB_d;
+
+  // ... snip ...
+
+endmodule
+```
+
+The public API of this example module consists of the module declaration,
+hierarchical paths to sequential elements, and other packaged components like
+helper scripts and design constraints.
+
+Significant differences between the APIs of Verilog versus SystemVerilog APIs
+include:
+
+- Fewer and less specific data types (usually `wire` or `reg`) and almost no
+  distinction between 2-state and 4-state constants.
+- No packages or interfaces (using `package` and `interface` keywords) with
+  their shared functions, constants, and datatypes.
+- No multidimensional parameters or signal ports.
+
+### MAJOR Versions
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+>
+> 1. MAJOR version when you make incompatible API changes
+
+Referencing the example, the MAJOR version must be incremented with any of the
+following changes:
+
+1. Modified module name which integrators use to declare an instance of the
+  peripheral, e.g. `Alu` → `MyArithmetic`.
+  Existing code using the name `Alu` will not elaborate unchanged.
+2. Removed parameter port, e.g. ~~`RESULT_W`~~.
+  Existing code overriding the parameter value will not elaborate unchanged.
+3. Modified parameter port kind, e.g. `parameter` → `localparam`, i.e.
+  overridable to non-overridable.
+  Existing code overriding the parameter value will not elaborate unchanged.
+4. Modified parameter port name, e.g. `RESULT_W` → `OUT_WIDTH`.
+  Existing code using the name `RESULT_W` will not elaborate unchanged.
+5. Modified parameter port default value, e.g. `16` → `5`, including
+  addition or removal of the explicit default value.
+  Existing code may depend on the default value for critical functionality.
+6. Removed signal port, e.g. ~~`o_result`~~.
+  Existing code using that port will not elaborate unchanged.
+7. Modified signal port datatype, e.g. `wire [7:0]` → `reg [15:0]`.
+  Existing code may depend on the size and structure of the port datatype, and
+  input expressions may be cast to an unexpected width or datatype.
+8. Modified signal port name, e.g. `i_operands` → `i_numbers`.
+  Existing code using the name `i_operands` will not elaborate unchanged.
+9. Removed or modified sequential signal name, e.g. `foo_q` → `bar_q`.
+  Existing code referencing `foo_q` will not find the inferred FF(s).
+  You may not notice the breakage until your colleagues in physical
+  implementation notify you that their scripts don't work.
+  In the worst cases, FFs requiring special treatment can be silently missed.
+10. Added, removed, or renamed hierarchical middle layer, e.g.
+  `Alu.u_pipe` → `Alu.u_wrapperA.u_pipe`.
+  Existing code, particularly for physical implementation, may depend on the
+  hierarchical names including generate blocks.
+11. Removed, modified, or renamed hierarchical bottom layer, e.g.
+  `Alu.u_pipe1` → `Alu.u_pipe[1]`.
+  Existing code, particularly for physical implementation, may depend on the
+  hierarchical names including generate loops.
+12. Added, removed, or modified any machine-readable comment, e.g.
+  tool-specific directives like `// synopsys parallel_case`.
+  Existing flows are likely to depend on these for critical functionality.
+13. Removed software-accessible register, e.g. ~~`CFG`~~.
+  Existing system software accessing the `CFG` address will not operate
+  equivalently.
+14. Modified software-accessible register address, e.g.
+  `12'h444` → `12'h888`.
+  Existing system software accessing the address `0x444` will not operate
+  equivalently.
+15. Modified software-accessible register field layout, e.g.
+  `CFG[0]=ENABLE` → `CFG[31]=ENABLE`.
+  Existing system software accessing the register will not operate
+  equivalently.
+16. Modified software-accessible register reset value, e.g.
+  `32'd5` → `32'd0`.
+  Existing system software accessing the register will not operate
+  equivalently, particularly software performing non-atomic read-modify-write
+  operations on startup like `cfg->operation++`.
+
+To summarize, the MAJOR version must be incremented with any changes which
+*require* updates to any projects that fetch the newly released version.
+Note, changes to match the documentation of a previous release should be
+considered bug fixes, so may only warrant a MINOR increment.
+
+
+### MINOR Versions
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+>
+> 2. MINOR version when you add functionality in a backwards compatible manner
+
+Where SemVer specifies adding functionality, SoC designs must update
+*at least* the MINOR version with any of the following modifications:
+
+1. Added parameter port, e.g. `ANOTHER`.
+  Existing code will elaborate unchanged.
+2. Modified parameter port datatype, e.g. `integer` to `[3:0]`, including
+  removal of the explicit datatype.
+  Existing code may elaborate unchanged, but override values may be cast to
+  an unexpected width or datatype.
+  If existing code needs changes to elaborate with the updated version, then
+  increment MAJOR instead.
+3. Added signal port, e.g. `output o_another`.
+  Existing code may elaborate unchanged and a new signal port implies new
+  functionality.
+4. Modified signal port direction, e.g. `inout myport` → `output myport`.
+  Existing code may elaborate unchanged, but simulation semantics may be
+  different.
+  If existing code needs changes to elaborate with the updated version, then
+  increment MAJOR instead.
+5. Modified signal port nettype, e.g. `input wire` → `input supply0`.
+  Existing code may elaborate unchanged, but simulation semantics may be
+  different.
+  If existing code needs changes to elaborate with the updated version, then
+  increment MAJOR instead.
+6. Modified sequential signal datatype or expression, e.g.
+  `reg [31:0] foo_q` → `integer foo_q`.
+  Backwards-compatible changes only require a MINOR increment, but incompatible
+  changes like reducing the *intended* width of a FF vector require a MAJOR
+  increment.
+7. Added hierarchical bottom layer, e.g. `Alu.u_pipeA2`.
+  New hierarchy implies new functionality, not just a bug fix.
+8. Added software-accessible register, e.g. `STATUS`.
+  Existing system software will not operate equivalently, and updated software
+  may use the new functionality.
+
+To summarize, the MINOR version must be incremented with any changes which
+add or modify functionality in a manner which *does not require* downstream
+users to make changes.
+If downstream users are required to make changes to their project in order to
+accept the new version, increment MAJOR instead.
+
+
+### PATCH Versions
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+>
+> 3. PATCH version when you make backwards compatible bug fixes
+
+As with SemVer, only backwards-compatible changes (for all downstream users)
+are allowed within a PATCH increment version.
+
+1. Added, removed, or modified internal constant, e.g.
+  `MYCONSTANT` → `BETTERNAME`.
+  Internal constants should not be relied upon downstream.
+2. Added, removed, or modified internal combinational signal, e.g.
+  `foo_d` → `bar_d`.
+  Internal combinational signals should not be relied upon downstream.
+  Exemption: If you change signals which are *intended* to be probed or
+  forced by downstream users, increment MAJOR instead, e.g.
+  `disableChecks` → `turnOffChecks`.
+3. Added internal sequential signal, e.g. `new_q`.
+  Additional FFs will affect area, power, achievable fmax and cost, but are
+  unlikely to break physical implementation flows outright.
+  Note, removed or renamed internal signals require a MAJOR increment.
+4. Non-functionally modified function, e.g. to improve simulation
+   performance without affecting its
+   [domain, codomain](https://en.wikipedia.org/wiki/Function_(mathematics)), or
+   [image](https://en.wikipedia.org/wiki/Image_(mathematics)).
+5. Any [tag comment](https://en.wikipedia.org/wiki/Comment_(computer_programming)#Tags),
+  e.g. `/* TODO: Something */`.
+  Note, where changes include updates to tag comments, there's a good chance
+  the changes also involve enough to warrant a MINOR or MAJOR increment.
+6. Any human-only comment, e.g. `/* Isn't this nice */`.
+
+
+### SemVer for Verilog Cheatsheet
+
+| How | What                            | Increment (at least) |
+|:---:|:--------------------------------|:---------------------|
+| mod | Top-level module name           | MAJOR                |
+| add | Parameter port                  | MINOR                |
+| rem | Parameter port                  | MAJOR                |
+| mod | Parameter port datatype         | MINOR                |
+| mod | Parameter port name             | MAJOR                |
+| mod | Parameter port default value    | MAJOR                |
+| add | Signal port                     | MINOR                |
+| rem | Signal port                     | MAJOR                |
+| mod | Signal port direction           | MINOR                |
+| mod | Signal port nettype             | MINOR                |
+| mod | Signal port datatype            | MAJOR                |
+| mod | Signal port name                | MAJOR                |
+| any | Internal constant               | PATCH                |
+| any | Combinatorial signal            | PATCH                |
+| add | Sequential signal               | PATCH                |
+| rem | Sequential signal               | MAJOR                |
+| mod | Sequential signal name          | MAJOR`*`             |
+| mod | Sequential signal datatype      | MINOR                |
+| mod | Sequential signal expression    | MINOR                |
+| any | Hierarchy middle layer          | MAJOR`*`             |
+| add | Hierarchy bottom layer          | MINOR                |
+| mod | Hierarchy bottom layer          | MAJOR`*`             |
+| any | Tool directive comment          | MAJOR                |
+| any | Human-only or tag comment       | PATCH                |
+| add | Software register               | MINOR                |
+| rem | Software register               | MAJOR`*`             |
+| mod | Software register address       | MAJOR`*`             |
+| mod | Software register field layout  | MAJOR`*`             |
+| mod | Software register reset value   | MAJOR`*`             |
+
+`*` Increment MAJOR, unless changes are *explicitly* exempt (then MINOR).
+
+
 ## FAQ
 
 1 -
