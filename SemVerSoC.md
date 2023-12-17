@@ -139,7 +139,7 @@ module Alu
   #(parameter int RESULT_W = 16
   )
   ( input  var logic [1:0][7:0]     i_operands
-  , output var logic [RESULT_W-1:0] o_resultant
+  , output var logic [RESULT_W-1:0] o_result
   , APB.slave                       ifc_APB
   );
 
@@ -197,7 +197,7 @@ following changes:
 5. Modified parameter port default value, e.g. `16` → `5`, including
   addition or removal of the explicit default value.
   Existing code may depend on the default value for critical functionality.
-6. Removed signal port, e.g. ~~`o_resultant`~~.
+6. Removed signal port, e.g. ~~`o_result`~~.
   Existing code using that port will not elaborate unchanged.
 7. Modified signal port datatype, e.g. `logic [1:0][7:0]` → `logic [15:0]`.
   Existing code may depend on the size and structure of the port datatype, and
