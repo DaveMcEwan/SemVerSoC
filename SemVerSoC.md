@@ -394,7 +394,7 @@ Should internal signal names really be considered part of the public API?
 A common point of confusion is that SoC design is not the same as software.
 The SoC design process (at the [RTL](https://en.wikipedia.org/wiki/Register-transfer_level)
 level) sits somewhere between the design processes for software and high-volume
-hardware like injection moulds or [PCB](https://en.wikipedia.org/wiki/Printed_circuit_board)s.
+hardware like injection moulds or [PCBs](https://en.wikipedia.org/wiki/Printed_circuit_board).
 High-volume manufacturing processes require extreme rigor in even the tiniest
 change because a subtle unnoticed mistake can quickly cost a huge amount of
 wasted resources.
@@ -492,7 +492,7 @@ These are some of the things that SemVer numbers do *not* convey:
 - The quality or completeness of any aspect.
 - What features are included or excluded.
 - How much effort was involved, e.g. the number of
-  [man-month](https://en.wikipedia.org/wiki/The_Mythical_Man-Month)s.
+  [man-months](https://en.wikipedia.org/wiki/The_Mythical_Man-Month).
 - The size of the changes, e.g. the number of changed lines.
 - How much smaller/faster/neater/better the new release is.
 - Whether the release is stable for one set of users, e.g. verification, versus
