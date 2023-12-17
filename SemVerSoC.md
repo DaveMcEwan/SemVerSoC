@@ -232,16 +232,16 @@ following changes:
 17. Removed software-accessible register, e.g. ~~`CFG`~~.
   Existing system software accessing the `CFG` address will not operate
   equivalently.
-18. Modified software-accessible register address, e.g. `12'h444` →
-  `12'h888`.
+18. Modified software-accessible register address, e.g.
+  `12'h444` → `12'h888`.
   Existing system software accessing the address `0x444` will not operate
   equivalently.
-19. Modified software-accessible register field layout, e.g. `CFG[0]=ENABLE`
-  → `CFG[31]=ENABLE`.
+19. Modified software-accessible register field layout, e.g.
+  `CFG[0]=ENABLE` → `CFG[31]=ENABLE`.
   Existing system software accessing the register will not operate
   equivalently.
-20. Modified software-accessible register reset value, e.g. `32'd5` →
-  `32'd0`.
+20. Modified software-accessible register reset value, e.g.
+  `32'd5` → `32'd0`.
   Existing system software accessing the register will not operate
   equivalently, particularly software performing non-atomic read-modify-write
   operations on startup like `cfg->operation++`.
@@ -287,8 +287,8 @@ Where SemVer specifies adding functionality, SoC designs must update
 6. Added interface port, e.g. `OCP.slave`.
   Existing code may elaborate unchanged and a new interface port implies new
   functionality.
-7. Modified sequential signal datatype or expression, e.g. `logic [1:0] foo_q`
-  → `FooEnum_t foo_q`.
+7. Modified sequential signal datatype or expression, e.g.
+  `logic [1:0] foo_q` → `FooEnum_t foo_q`.
   Backwards-compatible changes only require a MINOR increment, but incompatible
   changes like reducing the *intended* width of a FF vector require a MAJOR
   increment.
@@ -316,15 +316,15 @@ accept the new version, increment MAJOR instead.
 As with SemVer, only backwards-compatible changes (for all downstream users)
 are allowed within a PATCH increment version.
 
-1. Added, removed, or modified internal constant, e.g. `MYCONSTANT` →
-  `BETTERNAME`.
+1. Added, removed, or modified internal constant, e.g.
+  `MYCONSTANT` → `BETTERNAME`.
   Internal constants should not be relied upon downstream.
-2. Added, removed, or modified internal combinational signal, e.g. `foo_d` →
-  `bar_d`.
+2. Added, removed, or modified internal combinational signal, e.g.
+  `foo_d` → `bar_d`.
   Internal combinational signals should not be relied upon downstream.
   Exemption: If you change signals which are *intended* to be probed or
-  forced by downstream users, increment MAJOR instead, e.g. `disableChecks`
-  → `turnOffChecks`.
+  forced by downstream users, increment MAJOR instead, e.g.
+  `disableChecks` → `turnOffChecks`.
 3. Added internal sequential signal, e.g. `new_q`.
   Additional FFs will affect area, power, achievable fmax and cost, but are
   unlikely to break physical implementation flows outright.
