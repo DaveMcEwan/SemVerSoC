@@ -516,8 +516,8 @@ all types from file encoding (e.g. <a
 href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> vs <a
 href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a>) and
 whitespace/formatting rules to the specification language (e.g. Verilog
-vs SystemVerilog) and naming conventions. Other users may have flows
-which extract information which depend on these seemingly minor
+vs SystemVerilog) and naming conventions. Other users may have
+information-extracting flows which depend on these seemingly minor
 details.</li>
 <li>Hierarchical paths and specific identifiers (names) which are not
 explicitly exempt. In verification, specific FFs may be forced to obtain
@@ -558,25 +558,25 @@ as two fields <code>CFG[2:1]=OPERATION</code> and
 class="sourceCode systemverilog"><code class="sourceCode systemverilog"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> Alu</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  #(<span class="kw">parameter</span> <span class="kw">int</span> RESULT_W = <span class="dv">16</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ( <span class="kw">input</span>  <span class="kw">var</span> <span class="kw">logic</span> [<span class="dv">1</span>:<span class="dv">0</span>][<span class="dv">7</span>:<span class="dv">0</span>]     i_operands</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  , <span class="kw">output</span> <span class="kw">var</span> <span class="kw">logic</span> [RESULT_W<span class="dv">-1</span>:<span class="dv">0</span>] o_resultant</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  , APB.slave                       ifc_APB</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  ( <span class="kw">input</span>  <span class="kw">var</span> <span class="kw">logic</span> [<span class="dv">1</span>:<span class="dv">0</span>][<span class="dv">7</span>:<span class="dv">0</span>]       i_operands</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  , <span class="kw">output</span> <span class="kw">var</span> <span class="kw">logic</span> [RESULT_W - <span class="dv">1</span>:<span class="dv">0</span>] o_result</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  , APB.slave                         ifc_APB</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  );</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">localparam</span> <span class="kw">bit</span> MYCONSTANT = <span class="bn">1&#39;b1</span>;</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be combinatorially assigned via `always_comb`, `assign`,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be combinatorially driven via `always_comb`, `assign`,</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// or connection to sub-module.</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">logic</span> foo_d;</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be sequentially assigned via `always_ff`.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be sequentially driven via `always_ff`.</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">logic</span> foo_q;</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... snip ...</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  ArithmeticPipe u_pipeA1</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    (<span class="dt"> .i_opA</span>  (i_operands[<span class="dv">3</span>:<span class="dv">0</span>])</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    ,<span class="dt"> .i_opB</span>  (i_operands[<span class="dv">7</span>:<span class="dv">4</span>])</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    (<span class="dt"> .i_opA</span>  (i_operands[<span class="dv">1</span>][<span class="dv">3</span>:<span class="dv">0</span>])</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    ,<span class="dt"> .i_opB</span>  (i_operands[<span class="dv">0</span>][<span class="dv">7</span>:<span class="dv">4</span>])</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    ,<span class="dt"> .o_taps</span> (foo_d)</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    );</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
@@ -623,8 +623,8 @@ code overriding the parameter value will not elaborate unchanged.</li>
 <code>5</code>, including addition or removal of the explicit default
 value. Existing code may depend on the default value for critical
 functionality.</li>
-<li>Removed signal port, e.g. <del><code>o_resultant</code></del>.
-Existing code using that port will not elaborate unchanged.</li>
+<li>Removed signal port, e.g. <del><code>o_result</code></del>. Existing
+code using that port will not elaborate unchanged.</li>
 <li>Modified signal port datatype, e.g. <code>logic [1:0][7:0]</code> →
 <code>logic [15:0]</code>. Existing code may depend on the size and
 structure of the port datatype, and input expressions may be cast to an
@@ -664,16 +664,16 @@ functionality.</li>
 <li>Removed software-accessible register,
 e.g. <del><code>CFG</code></del>. Existing system software accessing the
 <code>CFG</code> address will not operate equivalently.</li>
-<li>Modified software-accessible register address,
-e.g. <code>12'h444</code> → <code>12'h888</code>. Existing system
-software accessing the address <code>0x444</code> will not operate
+<li>Modified software-accessible register address, e.g.
+<code>12'h444</code> → <code>12'h888</code>. Existing system software
+accessing the address <code>0x444</code> will not operate
 equivalently.</li>
-<li>Modified software-accessible register field layout,
-e.g. <code>CFG[0]=ENABLE</code> → <code>CFG[31]=ENABLE</code>. Existing
+<li>Modified software-accessible register field layout, e.g.
+<code>CFG[0]=ENABLE</code> → <code>CFG[31]=ENABLE</code>. Existing
 system software accessing the register will not operate
 equivalently.</li>
-<li>Modified software-accessible register reset value,
-e.g. <code>32'd5</code> → <code>32'd0</code>. Existing system software
+<li>Modified software-accessible register reset value, e.g.
+<code>32'd5</code> → <code>32'd0</code>. Existing system software
 accessing the register will not operate equivalently, particularly
 software performing non-atomic read-modify-write operations on startup
 like <code>cfg-&gt;operation++</code>.</li>
@@ -724,8 +724,8 @@ class="MAJOR">MAJOR</span> instead.</li>
 <li>Added interface port, e.g. <code>OCP.slave</code>. Existing code may
 elaborate unchanged and a new interface port implies new
 functionality.</li>
-<li>Modified sequential signal datatype or expression,
-e.g. <code>logic [1:0] foo_q</code> → <code>FooEnum_t foo_q</code>.
+<li>Modified sequential signal datatype or expression, e.g.
+<code>logic [1:0] foo_q</code> → <code>FooEnum_t foo_q</code>.
 Backwards-compatible changes only require a <span
 class="MINOR">MINOR</span> increment, but incompatible changes like
 reducing the <em>intended</em> width of a FF vector require a <span
@@ -759,15 +759,15 @@ compatible bug fixes</li>
 users) are allowed within a <span class="PATCH">PATCH</span> increment
 version.</p>
 <ol class="incremental" type="1">
-<li>Added, removed, or modified internal constant,
-e.g. <code>MYCONSTANT</code> → <code>BETTERNAME</code>. Internal
-constants should not be relied upon downstream.</li>
-<li>Added, removed, or modified internal combinational signal,
-e.g. <code>foo_d</code> → <code>bar_d</code>. Internal combinational
-signals should not be relied upon downstream. Exemption: If you change
-signals which are <em>intended</em> to be probed or forced by downstream
-users, increment <span class="MAJOR">MAJOR</span> instead,
-e.g. <code>disableChecks</code> → <code>turnOffChecks</code>.</li>
+<li>Added, removed, or modified internal constant, e.g.
+<code>MYCONSTANT</code> → <code>BETTERNAME</code>. Internal constants
+should not be relied upon downstream.</li>
+<li>Added, removed, or modified internal combinational signal, e.g.
+<code>foo_d</code> → <code>bar_d</code>. Internal combinational signals
+should not be relied upon downstream. Exemption: If you change signals
+which are <em>intended</em> to be probed or forced by downstream users,
+increment <span class="MAJOR">MAJOR</span> instead, e.g.
+<code>disableChecks</code> → <code>turnOffChecks</code>.</li>
 <li>Added internal sequential signal, e.g. <code>new_q</code>.
 Additional FFs will affect area, power, achievable fmax and cost, but
 are unlikely to break physical implementation flows outright. Note,
@@ -1002,6 +1002,416 @@ class="MAJOR">MAJOR</span><code>*</code></td>
 <p><code>*</code> Increment <span class="MAJOR">MAJOR</span>, unless
 changes are <em>explicitly</em> exempt (then <span
 class="MINOR">MINOR</span>).</p>
+<h2 id="changes-in-verilog">Changes in Verilog</h2>
+<p>Verilog, IEEE Std. 1364, has been formally superseded by
+SystemVerilog, but is still used to support compatability with older
+tools. The SystemVerilog example (above) is adapted to demonstrate API
+components of a design distributed as Verilog.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> Alu</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span> i_clk</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">,</span> i_arst</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">,</span> i_operands</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">,</span> o_result</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">);</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">input</span>  <span class="dt">wire</span>                   i_clk<span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">input</span>  <span class="dt">wire</span>                   i_arst<span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">input</span>  <span class="dt">wire</span> <span class="op">[(</span><span class="dv">8</span> * <span class="dv">2</span><span class="op">)</span> <span class="op">-</span> <span class="dv">1</span><span class="op">:</span><span class="dv">0</span><span class="op">]</span>   i_operands<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">output</span> <span class="dt">wire</span> <span class="op">[</span>RESULT_W <span class="op">-</span> <span class="dv">1</span><span class="op">:</span><span class="dv">0</span><span class="op">]</span>  o_result<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">parameter</span> <span class="dt">integer</span> RESULT_W <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">localparam</span> <span class="op">[</span><span class="dv">0</span><span class="op">:</span><span class="dv">0</span><span class="op">]</span> MYCONSTANT <span class="op">=</span> <span class="bn">1&#39;b1</span><span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be combinatorially driven via `assign` or connection to sub-module.</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">wire</span> fooA_d<span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be combinatorially driven via `always @*`.</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">reg</span> fooB_d<span class="op">;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">// To be sequentially driven via `always @(posedge i_clk)`.</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="dt">reg</span> foo_q<span class="op">;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... snip ...</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  ArithmeticPipe u_pipeA1</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">(</span> .i_opA  <span class="op">(</span>i_operands<span class="op">[(</span><span class="dv">8</span> * <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> <span class="dv">3</span><span class="op">:(</span><span class="dv">8</span> * <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> <span class="dv">0</span><span class="op">])</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">,</span> .i_opB  <span class="op">(</span>i_operands<span class="op">[(</span><span class="dv">8</span> * <span class="dv">0</span><span class="op">)</span> <span class="op">+</span> <span class="dv">7</span><span class="op">:(</span><span class="dv">8</span> * <span class="dv">0</span><span class="op">)</span> <span class="op">+</span> <span class="dv">4</span><span class="op">])</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">,</span> .o_taps <span class="op">(</span>fooA_d<span class="op">)</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">always</span> <span class="op">@(</span><span class="kw">posedge</span> i_clk <span class="dt">or</span> <span class="kw">posedge</span> i_arst<span class="op">)</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>i_arst<span class="op">)</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>      foo_q <span class="op">&lt;=</span> &#39;<span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span>updateFoo<span class="op">)</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>      foo_q <span class="op">&lt;=</span> fooB_d<span class="op">;</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... snip ...</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">endmodule</span></span></code></pre></div>
+<p>The public API of this example module consists of the module
+declaration, hierarchical paths to sequential elements, and other
+packaged components like helper scripts and design constraints.</p>
+<p>Significant differences between the APIs of Verilog versus
+SystemVerilog APIs include:</p>
+<ul class="incremental">
+<li>Fewer and less specific data types (usually <code>wire</code> or
+<code>reg</code>) and almost no distinction between 2-state and 4-state
+constants.</li>
+<li>No packages or interfaces (using <code>package</code> and
+<code>interface</code> keywords) with their shared functions, constants,
+and datatypes.</li>
+<li>No multidimensional parameters or signal ports.</li>
+</ul>
+<h3 id="major-versions-1"><span class="MAJOR">MAJOR</span> Versions</h3>
+<blockquote>
+<p>Given a version number <span class="MAJOR">MAJOR</span>.<span
+class="MINOR">MINOR</span>.<span class="PATCH">PATCH</span>, increment
+the:</p>
+<ol class="incremental" type="1">
+<li><span class="MAJOR">MAJOR</span> version when you make incompatible
+API changes</li>
+</ol>
+</blockquote>
+<p>Referencing the example, the <span class="MAJOR">MAJOR</span> version
+must be incremented with any of the following changes:</p>
+<ol class="incremental" type="1">
+<li>Modified module name which integrators use to declare an instance of
+the peripheral, e.g. <code>Alu</code> → <code>MyArithmetic</code>.
+Existing code using the name <code>Alu</code> will not elaborate
+unchanged.</li>
+<li>Removed parameter port, e.g. <del><code>RESULT_W</code></del>.
+Existing code overriding the parameter value will not elaborate
+unchanged.</li>
+<li>Modified parameter port kind, e.g. <code>parameter</code> →
+<code>localparam</code>, i.e. overridable to non-overridable. Existing
+code overriding the parameter value will not elaborate unchanged.</li>
+<li>Modified parameter port name, e.g. <code>RESULT_W</code> →
+<code>OUT_WIDTH</code>. Existing code using the name
+<code>RESULT_W</code> will not elaborate unchanged.</li>
+<li>Modified parameter port default value, e.g. <code>16</code> →
+<code>5</code>, including addition or removal of the explicit default
+value. Existing code may depend on the default value for critical
+functionality.</li>
+<li>Removed signal port, e.g. <del><code>o_result</code></del>. Existing
+code using that port will not elaborate unchanged.</li>
+<li>Modified signal port datatype, e.g. <code>wire [7:0]</code> →
+<code>reg [15:0]</code>. Existing code may depend on the size and
+structure of the port datatype, and input expressions may be cast to an
+unexpected width or datatype.</li>
+<li>Modified signal port name, e.g. <code>i_operands</code> →
+<code>i_numbers</code>. Existing code using the name
+<code>i_operands</code> will not elaborate unchanged.</li>
+<li>Removed or modified sequential signal name, e.g. <code>foo_q</code>
+→ <code>bar_q</code>. Existing code referencing <code>foo_q</code> will
+not find the inferred FF(s). You may not notice the breakage until your
+colleagues in physical implementation notify you that their scripts
+don’t work. In the worst cases, FFs requiring special treatment can be
+silently missed.</li>
+<li>Added, removed, or renamed hierarchical middle layer, e.g.
+<code>Alu.u_pipe</code> → <code>Alu.u_wrapperA.u_pipe</code>. Existing
+code, particularly for physical implementation, may depend on the
+hierarchical names including generate blocks.</li>
+<li>Removed, modified, or renamed hierarchical bottom layer, e.g.
+<code>Alu.u_pipe1</code> → <code>Alu.u_pipe[1]</code>. Existing code,
+particularly for physical implementation, may depend on the hierarchical
+names including generate loops.</li>
+<li>Added, removed, or modified any machine-readable comment, e.g.
+tool-specific directives like <code>// synopsys parallel_case</code>.
+Existing flows are likely to depend on these for critical
+functionality.</li>
+<li>Removed software-accessible register,
+e.g. <del><code>CFG</code></del>. Existing system software accessing the
+<code>CFG</code> address will not operate equivalently.</li>
+<li>Modified software-accessible register address, e.g.
+<code>12'h444</code> → <code>12'h888</code>. Existing system software
+accessing the address <code>0x444</code> will not operate
+equivalently.</li>
+<li>Modified software-accessible register field layout, e.g.
+<code>CFG[0]=ENABLE</code> → <code>CFG[31]=ENABLE</code>. Existing
+system software accessing the register will not operate
+equivalently.</li>
+<li>Modified software-accessible register reset value, e.g.
+<code>32'd5</code> → <code>32'd0</code>. Existing system software
+accessing the register will not operate equivalently, particularly
+software performing non-atomic read-modify-write operations on startup
+like <code>cfg-&gt;operation++</code>.</li>
+</ol>
+<p>To summarize, the <span class="MAJOR">MAJOR</span> version must be
+incremented with any changes which <em>require</em> updates to any
+projects that fetch the newly released version. Note, changes to match
+the documentation of a previous release should be considered bug fixes,
+so may only warrant a <span class="MINOR">MINOR</span> increment.</p>
+<h3 id="minor-versions-1"><span class="MINOR">MINOR</span> Versions</h3>
+<blockquote>
+<p>Given a version number <span class="MAJOR">MAJOR</span>.<span
+class="MINOR">MINOR</span>.<span class="PATCH">PATCH</span>, increment
+the:</p>
+<ol class="incremental" start="2" type="1">
+<li><span class="MINOR">MINOR</span> version when you add functionality
+in a backwards compatible manner</li>
+</ol>
+</blockquote>
+<p>Where SemVer specifies adding functionality, SoC designs must update
+<em>at least</em> the <span class="MINOR">MINOR</span> version with any
+of the following modifications:</p>
+<ol class="incremental" type="1">
+<li>Added parameter port, e.g. <code>ANOTHER</code>. Existing code will
+elaborate unchanged.</li>
+<li>Modified parameter port datatype, e.g. <code>integer</code> to
+<code>[3:0]</code>, including removal of the explicit datatype. Existing
+code may elaborate unchanged, but override values may be cast to an
+unexpected width or datatype. If existing code needs changes to
+elaborate with the updated version, then increment <span
+class="MAJOR">MAJOR</span> instead.</li>
+<li>Added signal port, e.g. <code>output o_another</code>. Existing code
+may elaborate unchanged and a new signal port implies new
+functionality.</li>
+<li>Modified signal port direction, e.g. <code>inout myport</code> →
+<code>output myport</code>. Existing code may elaborate unchanged, but
+simulation semantics may be different. If existing code needs changes to
+elaborate with the updated version, then increment <span
+class="MAJOR">MAJOR</span> instead.</li>
+<li>Modified signal port nettype, e.g. <code>input wire</code> →
+<code>input supply0</code>. Existing code may elaborate unchanged, but
+simulation semantics may be different. If existing code needs changes to
+elaborate with the updated version, then increment <span
+class="MAJOR">MAJOR</span> instead.</li>
+<li>Modified sequential signal datatype or expression, e.g.
+<code>reg [31:0] foo_q</code> → <code>integer foo_q</code>.
+Backwards-compatible changes only require a <span
+class="MINOR">MINOR</span> increment, but incompatible changes like
+reducing the <em>intended</em> width of a FF vector require a <span
+class="MAJOR">MAJOR</span> increment.</li>
+<li>Added hierarchical bottom layer, e.g. <code>Alu.u_pipeA2</code>. New
+hierarchy implies new functionality, not just a bug fix.</li>
+<li>Added software-accessible register, e.g. <code>STATUS</code>.
+Existing system software will not operate equivalently, and updated
+software may use the new functionality.</li>
+</ol>
+<p>To summarize, the <span class="MINOR">MINOR</span> version must be
+incremented with any changes which add or modify functionality in a
+manner which <em>does not require</em> downstream users to make changes.
+If downstream users are required to make changes to their project in
+order to accept the new version, increment <span
+class="MAJOR">MAJOR</span> instead.</p>
+<h3 id="patch-versions-1"><span class="PATCH">PATCH</span> Versions</h3>
+<blockquote>
+<p>Given a version number <span class="MAJOR">MAJOR</span>.<span
+class="MINOR">MINOR</span>.<span class="PATCH">PATCH</span>, increment
+the:</p>
+<ol class="incremental" start="3" type="1">
+<li><span class="PATCH">PATCH</span> version when you make backwards
+compatible bug fixes</li>
+</ol>
+</blockquote>
+<p>As with SemVer, only backwards-compatible changes (for all downstream
+users) are allowed within a <span class="PATCH">PATCH</span> increment
+version.</p>
+<ol class="incremental" type="1">
+<li>Added, removed, or modified internal constant, e.g.
+<code>MYCONSTANT</code> → <code>BETTERNAME</code>. Internal constants
+should not be relied upon downstream.</li>
+<li>Added, removed, or modified internal combinational signal, e.g.
+<code>foo_d</code> → <code>bar_d</code>. Internal combinational signals
+should not be relied upon downstream. Exemption: If you change signals
+which are <em>intended</em> to be probed or forced by downstream users,
+increment <span class="MAJOR">MAJOR</span> instead, e.g.
+<code>disableChecks</code> → <code>turnOffChecks</code>.</li>
+<li>Added internal sequential signal, e.g. <code>new_q</code>.
+Additional FFs will affect area, power, achievable fmax and cost, but
+are unlikely to break physical implementation flows outright. Note,
+removed or renamed internal signals require a <span
+class="MAJOR">MAJOR</span> increment.</li>
+<li>Non-functionally modified function, e.g. to improve simulation
+performance without affecting its <a
+href="https://en.wikipedia.org/wiki/Function_(mathematics)">domain,
+codomain</a>, or <a
+href="https://en.wikipedia.org/wiki/Image_(mathematics)">image</a>.</li>
+<li>Any <a
+href="https://en.wikipedia.org/wiki/Comment_(computer_programming)#Tags">tag
+comment</a>, e.g. <code>/* TODO: Something */</code>. Note, where
+changes include updates to tag comments, there’s a good chance the
+changes also involve enough to warrant a <span
+class="MINOR">MINOR</span> or <span class="MAJOR">MAJOR</span>
+increment.</li>
+<li>Any human-only comment,
+e.g. <code>/* Isn't this nice */</code>.</li>
+</ol>
+<h3 id="semver-for-verilog-cheatsheet">SemVer for Verilog
+Cheatsheet</h3>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 55%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">How</th>
+<th style="text-align: left;">What</th>
+<th style="text-align: left;">Increment (at least)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Top-level module name</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chAdd">add</span></td>
+<td style="text-align: left;">Parameter port</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chRem">rem</span></td>
+<td style="text-align: left;">Parameter port</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Parameter port datatype</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Parameter port name</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Parameter port default value</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chAdd">add</span></td>
+<td style="text-align: left;">Signal port</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chRem">rem</span></td>
+<td style="text-align: left;">Signal port</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Signal port direction</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Signal port nettype</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Signal port datatype</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Signal port name</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chAny">any</span></td>
+<td style="text-align: left;">Internal constant</td>
+<td style="text-align: left;"><span class="PATCH">PATCH</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chAny">any</span></td>
+<td style="text-align: left;">Combinatorial signal</td>
+<td style="text-align: left;"><span class="PATCH">PATCH</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chAdd">add</span></td>
+<td style="text-align: left;">Sequential signal</td>
+<td style="text-align: left;"><span class="PATCH">PATCH</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chRem">rem</span></td>
+<td style="text-align: left;">Sequential signal</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Sequential signal name</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Sequential signal datatype</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Sequential signal expression</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chAny">any</span></td>
+<td style="text-align: left;">Hierarchy middle layer</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chAdd">add</span></td>
+<td style="text-align: left;">Hierarchy bottom layer</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Hierarchy bottom layer</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chAny">any</span></td>
+<td style="text-align: left;">Tool directive comment</td>
+<td style="text-align: left;"><span class="MAJOR">MAJOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chAny">any</span></td>
+<td style="text-align: left;">Human-only or tag comment</td>
+<td style="text-align: left;"><span class="PATCH">PATCH</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chAdd">add</span></td>
+<td style="text-align: left;">Software register</td>
+<td style="text-align: left;"><span class="MINOR">MINOR</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chRem">rem</span></td>
+<td style="text-align: left;">Software register</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Software register address</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Software register field layout</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="ch chMod">mod</span></td>
+<td style="text-align: left;">Software register reset value</td>
+<td style="text-align: left;"><span
+class="MAJOR">MAJOR</span><code>*</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>*</code> Increment <span class="MAJOR">MAJOR</span>, unless
+changes are <em>explicitly</em> exempt (then <span
+class="MINOR">MINOR</span>).</p>
 <h2 id="faq">FAQ</h2>
 <dl class="incremental">
 <dt>1 -</dt>
@@ -1085,7 +1495,7 @@ increment <span class="MAJOR">MAJOR</span> for every dependency update?
 class="MAJOR">MAJOR</span> has increased, then yes because that
 incompatibility can break things for your users.</li>
 <li>If you’re using a version control like git, you don’t need to make a
-release for each depedency individually, just like you wouldn’t make a
+release for each dependency individually, just like you wouldn’t make a
 release from every commit. As a responsible developer, your releases
 should be planned and the effects of any changes should be
 understood.</li>
@@ -1106,7 +1516,11 @@ class="PATCH">PATCH</span> indicates bugfixes. How do these rules apply?
 <p>It’s great to have a well-written plan so that users know what key
 features to expect as your project progresses, and it’s nice that you
 provide a consistent way of communicating project progress. However,
-that is not Semantic Versioning.</p>
+that is not Semantic Versioning. Where users of your project assume it
+uses Semantic Versioning and have automated tools like <a
+href="https://docs.github.com/en/code-security/dependabot">Dependabot</a>
+to detect compatabilities between component releases, they’re likely to
+experience unexpected breakages.</p>
 <p>Semantic Versioning is a scheme for communicating functional
 compatibility between releases, not about communicating project
 progress. Alternative schemes may appear cosmetically similar to SemVer
@@ -1123,7 +1537,7 @@ convey:</p>
 <li>The quality or completeness of any aspect.</li>
 <li>What features are included or excluded.</li>
 <li>How much effort was involved, e.g. the number of <a
-href="https://en.wikipedia.org/wiki/The_Mythical_Man-Month">man-month</a>s.</li>
+href="https://en.wikipedia.org/wiki/The_Mythical_Man-Month">man-months</a>.</li>
 <li>The size of the changes, e.g. the number of changed lines.</li>
 <li>How much smaller/faster/neater/better the new release is.</li>
 <li>Whether the release is stable for one set of users,
