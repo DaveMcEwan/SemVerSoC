@@ -145,11 +145,11 @@ module Alu
 
   localparam bit MYCONSTANT = 1'b1;
 
-  // To be combinatorially assigned via `always_comb`, `assign`,
+  // To be combinatorially driven via `always_comb`, `assign`,
   // or connection to sub-module.
   logic foo_d;
 
-  // To be sequentially assigned via `always_ff`.
+  // To be sequentially driven via `always_ff`.
   logic foo_q;
 
   // ... snip ...
