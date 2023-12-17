@@ -138,9 +138,9 @@ as two fields `CFG[2:1]=OPERATION` and `CFG[0]=ENABLE`.
 module Alu
   #(parameter int RESULT_W = 16
   )
-  ( input  var logic [1:0][7:0]     i_operands
-  , output var logic [RESULT_W-1:0] o_result
-  , APB.slave                       ifc_APB
+  ( input  var logic [1:0][7:0]       i_operands
+  , output var logic [RESULT_W - 1:0] o_result
+  , APB.slave                         ifc_APB
   );
 
   localparam bit MYCONSTANT = 1'b1;
