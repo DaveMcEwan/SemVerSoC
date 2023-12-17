@@ -95,7 +95,7 @@ which may (or may not) correspond to additional files.
   [UTF-8](https://en.wikipedia.org/wiki/UTF-8)) and
   whitespace/formatting rules to the specification language (e.g. Verilog vs
   SystemVerilog) and naming conventions.
-  Other users may have flows which extract information which depend on these
+  Other users may have information-extracting flows which depend on these
   seemingly minor details.
 - Hierarchical paths and specific identifiers (names) which are not explicitly
   exempt.
